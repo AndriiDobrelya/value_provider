@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:value_provider/src/notifiable_builder.dart';
 
@@ -17,7 +19,7 @@ class ValueProvider<T, S> extends StatelessWidget {
         super(key: key);
 
   final ValueBuilder<T> builder;
-  final Future<S> future;
+  final FutureOr<S> future;
   final UpdateShouldNotify<T> shouldNotify;
   final ValueNotifier<T> notifier;
   final ValueConverter<T, S>? resultConverter;
@@ -27,7 +29,7 @@ class ValueProvider<T, S> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: future,
+      future: Future.value(future),
       builder: (context, result) {
         final hasData = result.hasData && result.data != null;
         if (hasData) notifier.value = resultConverter == null ? result.data as T : resultConverter!(result.data as S);
